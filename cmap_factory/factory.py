@@ -128,7 +128,20 @@ class ColorPool(ColorContainer):
 
             self.names.append(n)
 
-    def get_color_list(self, idx_0, idx_1, space='lab', **kwargs):
+    def name_to_idx(self, name):
+        return self.names.index(name)
+
+    def get_color_list(self,
+                       idx_0=None,
+                       idx_1=None,
+                       n_0=None,
+                       n_1=None,
+                       space='lab',
+                       **kwargs):
+        
+        idx_0 = idx_0 or self.name_to_idx(n_0)
+        idx_1 = idx_1 or self.name_to_idx(n_1)
+
         G = distance_matrix_to_graph(self.get_distance_matrix(space), **kwargs)
         _sort = nx.shortest_path(G, idx_0, idx_1)
         return ColorList(self.colors[_sort], space='rgb')
